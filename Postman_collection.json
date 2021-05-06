@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "ed6838c8-fb78-48bf-8c95-339050b79095",
+		"name": "Homework",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = JSON.parse(responseBoby);\r",
+							"postman.setEnvironmentVariable(\"token\", jsonData);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login ",
+							"value": "Valentin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User-info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const schema = \r",
+							"{\r",
+							"\"type\": \"object\",\r",
+							"    \"properties\": \r",
+							"    {\r",
+							"        \"qa_salary_after_12_months\": {\"type\": \"number\"},\r",
+							"        \"qa_salary_after_6_months\": {\"type\": \"number\"},\r",
+							"        \"start_qa_salary\": {\"type\": \"number\"},\r",
+							"        \"person\": \r",
+							"        {\r",
+							"            \"type\": \"object\",\r",
+							"            \"properties\": \r",
+							"            {\r",
+							"                    \"u_age\": {\"type\": \"number\"},\r",
+							"                    \"u_name\": \r",
+							"                    {\r",
+							"                        \"type\": \"array\",\r",
+							"                        \"items\": \r",
+							"                    [\r",
+							"                        {\"type\": \"string\"},\r",
+							"                        {\"type\": \"number\"},\r",
+							"                        {\"type\": \"number\"},\r",
+							"                    ]\r",
+							"                    },\r",
+							"                    \"u_salary_1_5_year\" : {\"type\": \"number\"},\r",
+							"            }       \r",
+							"        }     \r",
+							"\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Schema is valid\", function(){\r",
+							"pm.response.to.have.jsonSchema(schema)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Multiplication is valid\", function(){\r",
+							"    let jsonData = pm.response.json();\r",
+							"    let six = 2;\r",
+							"    let twelve = 2.9;\r",
+							"    let eighteen = 4;\r",
+							"    pm.expect(jsonData.qa_salary_after_6_months).to.eql(jsonData.start_qa_salary*six);\r",
+							"    pm.expect(jsonData.qa_salary_after_12_months).to.eql(jsonData.start_qa_salary*twelve);\r",
+							"    pm.expect(jsonData.person.u_salary_1_5_year).to.eql(jsonData.start_qa_salary*eighteen);\r",
+							"});\r",
+							"\r",
+							"let resData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"u_salary_1_5_year\", resData.person.u_salary_1_5_year);\r",
+							"\r",
+							"pm.test(\"Your test name\", function(){\r",
+							"    let testName = pm.response.json();\r",
+							"    pm.expect(testName.qa_salary_after_12_months).to.eql(870);\r",
+							"})\r",
+							"\r",
+							"let req_data = request.data;\r",
+							"console.log (req_data.age)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "age",
+							"value": "23",
+							"type": "text"
+						},
+						{
+							"key": "salary",
+							"value": "300",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Valentin",
+							"type": "text"
+						},
+						{
+							"key": "auth_token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/user_info",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user_info"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
